@@ -43,14 +43,11 @@ export default function ProfilePage() {
 
 
   const getCameraPermission = async () => {
-      if (hasCameraPermission) {
-          const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-          if (videoRef.current) {
-              videoRef.current.srcObject = stream;
-          }
-          return;
-      };
-
+      if (hasCameraPermission && videoRef.current && videoRef.current.srcObject) {
+          const stream = videoRef.current.srcObject as MediaStream;
+            stream.getTracks().forEach(track => track.stop());
+      }
+      
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
         setHasCameraPermission(true);
@@ -175,7 +172,7 @@ export default function ProfilePage() {
                             </div>
                             <AlertDialogFooter>
                                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                <AlertDialogAction onClick={handleCapture} disabled={!hasCameraPermission}>
+                                <AlertDialogAction onClick={handleCapture} disabled={hasCameraPermission === null || hasCameraPermission === false}>
                                     Capture & Save
                                 </AlertDialogAction>
                             </AlertDialogFooter>
