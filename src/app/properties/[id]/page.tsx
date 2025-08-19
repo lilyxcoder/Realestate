@@ -5,9 +5,9 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { Badge } from '@/components/ui/badge';
 import { BedDouble, Bath, SquareGanttChart, MapPin, CheckCircle } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
-import { PropertyContactForm } from '@/components/properties/PropertyContactForm';
 import { SimilarProperties } from '@/components/properties/SimilarProperties';
 import { Card, CardContent } from '@/components/ui/card';
+import { InvestmentDetails } from '@/components/properties/InvestmentDetails';
 
 export default async function PropertyDetailsPage({ params }: { params: { id: string } }) {
   const property = await getPropertyById(params.id);
@@ -122,7 +122,7 @@ export default async function PropertyDetailsPage({ params }: { params: { id: st
                     <Badge variant="secondary">{property.type}</Badge>
                 </CardContent>
             </Card>
-            <PropertyContactForm agent={agent} />
+            <InvestmentDetails price={property.price} />
           </aside>
         </div>
       </div>
