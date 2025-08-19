@@ -30,12 +30,24 @@ export default function Home() {
         </div>
       </section>
 
-      <WhyInvest />
-      <FeaturedProperties />
-      <AboutRealvest />
-      <PricingPlans />
-      <Testimonials />
-      <OurAgents />
+      <div className="bg-card">
+        <WhyInvest />
+      </div>
+      <div className="bg-background">
+        <FeaturedProperties />
+      </div>
+       <div className="bg-card">
+        <AboutRealvest />
+      </div>
+      <div className="bg-background">
+        <PricingPlans />
+      </div>
+       <div className="bg-card">
+        <Testimonials />
+      </div>
+      <div className="bg-background">
+        <OurAgents />
+      </div>
     </>
   );
 }
