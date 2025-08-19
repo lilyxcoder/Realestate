@@ -4,6 +4,7 @@ import { Testimonials } from '@/components/home/Testimonials';
 import { SearchFilters } from '@/components/properties/SearchFilters';
 import Image from 'next/image';
 import { PricingPlans } from '@/components/home/PricingPlans';
+import { WhyInvest } from '@/components/home/WhyInvest';
 
 export default function Home() {
   return (
@@ -28,6 +29,7 @@ export default function Home() {
         </div>
       </section>
 
+      <WhyInvest />
       <FeaturedProperties />
       <PricingPlans />
       <Testimonials />
