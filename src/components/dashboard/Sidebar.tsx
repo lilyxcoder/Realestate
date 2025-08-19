@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Building2, LayoutDashboard, Landmark, ArrowLeftRight, FileText, User, Lock, Headset, LogOut } from 'lucide-react';
+import { Building2, LayoutDashboard, Landmark, ArrowLeftRight, FileText, User, Lock, Headset, LogOut, Briefcase } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 
@@ -11,6 +11,7 @@ const navLinks = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/properties', label: 'Properties', icon: Building2 },
   { href: '/dashboard/invest', label: 'Investment', icon: FileText },
+  { href: '/dashboard/invested-properties', label: 'Invested Properties', icon: Briefcase },
   { href: '/dashboard/deposit', label: 'Deposit', icon: Landmark },
   { href: '/dashboard/withdraw', label: 'Withdraw', icon: ArrowLeftRight },
   { href: '/dashboard/transactions', label: 'Transaction', icon: FileText },
