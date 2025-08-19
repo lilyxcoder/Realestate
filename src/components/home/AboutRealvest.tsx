@@ -12,15 +12,19 @@ export function AboutRealvest() {
               Finding great properties for investment, we specialize in providing a streamlined platform for real estate investors to discover lucrative opportunities. Our user-friendly interface offers access to a diverse range of properties, complete with detailed analytics and expert guidance to help you make informed decisions. Whether you're a seasoned investor or just getting started, RealVest is your trusted partner for success in the real estate market.
             </p>
           </div>
-          <div>
+          <div className="relative">
             <Image 
-              src="https://placehold.co/600x400.png" 
+              src="/images/1721915950882.png" 
               alt="Modern building exterior"
               width={600}
               height={400}
               className="rounded-lg shadow-xl w-full"
               data-ai-hint="about-image"
             />
+            <div className="absolute top-4 left-4 bg-primary/80 text-primary-foreground p-4 rounded-lg shadow-lg backdrop-blur-sm">
+                <p className="text-3xl font-bold">20%</p>
+                <p>Average Profit Upto</p>
+            </div>
           </div>
         </div>
       </div>
