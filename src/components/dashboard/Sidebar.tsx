@@ -20,7 +20,6 @@ const navLinks = [
 
 const accountLinks = [
   { href: '/dashboard/2fa', label: '2FA Security', icon: Lock },
-  { href: '/dashboard/support', label: 'Support Ticket', icon: Headset },
   { href: '/dashboard/profile', label: 'Profile Setting', icon: User },
   { href: '/dashboard/password', label: 'Change Password', icon: Lock },
 ];
