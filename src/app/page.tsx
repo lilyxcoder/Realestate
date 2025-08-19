@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { PricingPlans } from '@/components/home/PricingPlans';
 import { WhyInvest } from '@/components/home/WhyInvest';
 import { AboutRealvest } from '@/components/home/AboutRealvest';
+import { Sponsors } from '@/components/home/Sponsors';
 
 export default function Home() {
   return (
@@ -45,7 +46,10 @@ export default function Home() {
        <div className="bg-card">
         <Testimonials />
       </div>
-      <div className="bg-background">
+       <div className="bg-background">
+        <Sponsors />
+      </div>
+      <div className="bg-card">
         <OurAgents />
       </div>
     </>
