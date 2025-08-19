@@ -5,6 +5,7 @@ import { SearchFilters } from '@/components/properties/SearchFilters';
 import Image from 'next/image';
 import { PricingPlans } from '@/components/home/PricingPlans';
 import { WhyInvest } from '@/components/home/WhyInvest';
+import { AboutRealvest } from '@/components/home/AboutRealvest';
 
 export default function Home() {
   return (
@@ -31,6 +32,7 @@ export default function Home() {
 
       <WhyInvest />
       <FeaturedProperties />
+      <AboutRealvest />
       <PricingPlans />
       <Testimonials />
       <OurAgents />
