@@ -19,7 +19,7 @@ export function AboutRealvest() {
               width={600}
               height={400}
               className="rounded-lg shadow-xl w-full"
-              data-ai-hint="about-image"
+              data-ai-hint="modern building"
             />
             <div className="absolute top-4 left-4 bg-primary/80 text-primary-foreground p-4 rounded-lg shadow-lg backdrop-blur-sm">
                 <p className="text-3xl font-bold">20%</p>
