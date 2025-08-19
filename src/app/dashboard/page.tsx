@@ -1,23 +1,42 @@
 
 "use client";
 
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { DollarSign, Wallet, ArrowDown, ArrowUp, BarChart, Bell, ArrowLeft } from "lucide-react";
+import { DollarSign, Wallet, ArrowDown, ArrowUp, BarChart, Bell, ArrowLeft, LineChart } from "lucide-react";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Bar, BarChart as RechartsBarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-const chartData = [
+const initialChartData = [
+  { month: "January", total: 0 },
+  { month: "February", total: 0 },
+  { month: "March", total: 0 },
+  { month: "April", total: 0 },
+  { month: "May", total: 0 },
+  { month: "June", total: 0 },
+];
+
+const investedChartData = [
   { month: "January", total: 1200 },
   { month: "February", total: 1800 },
   { month: "March", total: 1500 },
   { month: "April", total: 2200 },
   { month: "May", total: 2500 },
   { month: "June", total: 1900 },
+];
+
+const initialTransactions: any[] = [];
+
+const investedTransactions = [
+    { id: "TRZ1234", date: "2024-07-22", amount: 2500, type: "Deposit", status: "Completed" },
+    { id: "TRZ5678", date: "2024-07-21", amount: 500, type: "Investment", status: "Pending" },
+    { id: "TRZ9101", date: "2024-07-20", amount: 150, type: "Withdrawal", status: "Completed" },
+    { id: "TRZ1121", date: "2024-07-19", amount: 3000, type: "Deposit", status: "Completed" },
 ];
 
 const chartConfig = {
@@ -27,15 +46,19 @@ const chartConfig = {
   },
 };
 
-const transactions = [
-    { id: "TRZ1234", date: "2024-07-22", amount: 2500, type: "Deposit", status: "Completed" },
-    { id: "TRZ5678", date: "2024-07-21", amount: 500, type: "Investment", status: "Pending" },
-    { id: "TRZ9101", date: "2024-07-20", amount: 150, type: "Withdrawal", status: "Completed" },
-    { id: "TRZ1121", date: "2024-07-19", amount: 3000, type: "Deposit", status: "Completed" },
-];
-
 export default function DashboardPage() {
   const router = useRouter();
+  const [hasInvested, setHasInvested] = useState(false);
+
+  const stats = {
+    balance: hasInvested ? 15231.89 : 0,
+    totalInvest: hasInvested ? 10500.00 : 0,
+    totalDeposit: hasInvested ? 25350.00 : 0,
+    totalWithdraw: hasInvested ? 8125.00 : 0,
+  };
+
+  const chartData = hasInvested ? investedChartData : initialChartData;
+  const transactions = hasInvested ? investedTransactions : initialTransactions;
 
   return (
     <div className="space-y-8">
@@ -50,7 +73,7 @@ export default function DashboardPage() {
             <div className="flex items-center gap-4">
                 <div className="text-right">
                     <p className="font-bold text-lg">John Doe</p>
-                    <p className="text-sm text-muted-foreground">$15,231.89</p>
+                    <p className="text-sm text-muted-foreground">${stats.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                 </div>
                 <Button variant="ghost" size="icon">
                     <Bell className="h-6 w-6" />
@@ -65,8 +88,8 @@ export default function DashboardPage() {
             <DollarSign className="h-5 w-5 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">$15,231.89</div>
-            <p className="text-xs text-muted-foreground">+20.1% from last month</p>
+            <div className="text-2xl font-bold">${stats.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+            {hasInvested && <p className="text-xs text-muted-foreground">+20.1% from last month</p>}
           </CardContent>
         </Card>
         <Card>
@@ -75,8 +98,8 @@ export default function DashboardPage() {
             <BarChart className="h-5 w-5 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">$10,500.00</div>
-             <p className="text-xs text-muted-foreground">+15% from last month</p>
+            <div className="text-2xl font-bold">${stats.totalInvest.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+             {hasInvested && <p className="text-xs text-muted-foreground">+15% from last month</p>}
           </CardContent>
         </Card>
         <Card>
@@ -85,8 +108,8 @@ export default function DashboardPage() {
             <ArrowDown className="h-5 w-5 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">$25,350.00</div>
-            <p className="text-xs text-muted-foreground">+180.1% from last month</p>
+            <div className="text-2xl font-bold">${stats.totalDeposit.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+            {hasInvested && <p className="text-xs text-muted-foreground">+180.1% from last month</p>}
           </CardContent>
         </Card>
         <Card>
@@ -95,8 +118,8 @@ export default function DashboardPage() {
             <ArrowUp className="h-5 w-5 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">$8,125.00</div>
-             <p className="text-xs text-muted-foreground">+35% from last month</p>
+            <div className="text-2xl font-bold">${stats.totalWithdraw.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+             {hasInvested && <p className="text-xs text-muted-foreground">+35% from last month</p>}
           </CardContent>
         </Card>
       </div>
@@ -137,31 +160,42 @@ export default function DashboardPage() {
             <CardDescription>A summary of your most recent transactions.</CardDescription>
           </CardHeader>
           <CardContent>
-             <Table>
-                <TableHeader>
-                    <TableRow>
-                    <TableHead>Type</TableHead>
-                    <TableHead>Amount</TableHead>
-                    <TableHead>Status</TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {transactions.slice(0, 4).map((transaction) => (
-                    <TableRow key={transaction.id}>
-                        <TableCell>
-                            <div className="font-medium">{transaction.type}</div>
-                            <div className="text-sm text-muted-foreground">{transaction.date}</div>
-                        </TableCell>
-                        <TableCell>${transaction.amount.toFixed(2)}</TableCell>
-                        <TableCell>
-                            <Badge variant={transaction.status === 'Completed' ? 'default' : 'secondary'} className={`${transaction.status === 'Completed' ? 'bg-green-500/20 text-green-700' : 'bg-yellow-500/20 text-yellow-700'}`}>
-                                {transaction.status}
-                            </Badge>
-                        </TableCell>
-                    </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
+            {transactions.length > 0 ? (
+                 <Table>
+                    <TableHeader>
+                        <TableRow>
+                        <TableHead>Type</TableHead>
+                        <TableHead>Amount</TableHead>
+                        <TableHead>Status</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {transactions.slice(0, 4).map((transaction) => (
+                        <TableRow key={transaction.id}>
+                            <TableCell>
+                                <div className="font-medium">{transaction.type}</div>
+                                <div className="text-sm text-muted-foreground">{transaction.date}</div>
+                            </TableCell>
+                            <TableCell>${transaction.amount.toFixed(2)}</TableCell>
+                            <TableCell>
+                                <Badge variant={transaction.status === 'Completed' ? 'default' : 'secondary'} className={`${transaction.status === 'Completed' ? 'bg-green-500/20 text-green-700' : 'bg-yellow-500/20 text-yellow-700'}`}>
+                                    {transaction.status}
+                                </Badge>
+                            </TableCell>
+                        </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            ) : (
+                <div className="flex flex-col items-center justify-center text-center py-10">
+                    <LineChart className="h-12 w-12 text-muted-foreground mb-4" />
+                    <p className="font-medium">No transactions yet.</p>
+                    <p className="text-sm text-muted-foreground mb-6">Start investing to see your transaction history.</p>
+                    <Button onClick={() => setHasInvested(true)}>
+                        Make Your First Investment
+                    </Button>
+                </div>
+            )}
           </CardContent>
         </Card>
       </div>
