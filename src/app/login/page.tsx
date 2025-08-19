@@ -31,20 +31,12 @@ export default function LoginPage() {
   });
 
   const onSubmit = (values: z.infer<typeof loginSchema>) => {
-    // Mock authentication logic
-    if (values.email === "user@example.com" && values.password === "password") {
-      toast({
-        title: "Login Successful",
-        description: "Welcome back! Redirecting you to your dashboard.",
-      });
-      router.push('/dashboard');
-    } else {
-      toast({
-        variant: "destructive",
-        title: "Login Failed",
-        description: "Invalid email or password. Please try again.",
-      });
-    }
+    // Mock authentication logic - Accepts any valid email/password for demonstration
+    toast({
+      title: "Login Successful",
+      description: "Welcome back! Redirecting you to your dashboard.",
+    });
+    router.push('/dashboard');
   };
 
   return (
