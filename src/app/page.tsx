@@ -3,6 +3,7 @@ import { OurAgents } from '@/components/home/OurAgents';
 import { Testimonials } from '@/components/home/Testimonials';
 import { SearchFilters } from '@/components/properties/SearchFilters';
 import Image from 'next/image';
+import { PricingPlans } from '@/components/home/PricingPlans';
 
 export default function Home() {
   return (
@@ -28,6 +29,7 @@ export default function Home() {
       </section>
 
       <FeaturedProperties />
+      <PricingPlans />
       <Testimonials />
       <OurAgents />
     </>
