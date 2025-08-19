@@ -28,43 +28,51 @@ export default function ProfilePage() {
   const { toast } = useToast();
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
+  const [isCameraDialogOpen, setIsCameraDialogOpen] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    // Clean up stream on component unmount
-    return () => {
-        if (videoRef.current && videoRef.current.srcObject) {
-            const stream = videoRef.current.srcObject as MediaStream;
-            stream.getTracks().forEach(track => track.stop());
-        }
-    };
-  }, []);
+    // This effect handles camera cleanup when the dialog is closed.
+    let stream: MediaStream | null = null;
+    if (videoRef.current && videoRef.current.srcObject) {
+      stream = videoRef.current.srcObject as MediaStream;
+    }
 
+    return () => {
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+      }
+    };
+  }, [isCameraDialogOpen]);
 
   const getCameraPermission = async () => {
-      if (hasCameraPermission && videoRef.current && videoRef.current.srcObject) {
-          const stream = videoRef.current.srcObject as MediaStream;
-            stream.getTracks().forEach(track => track.stop());
-      }
-      
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        setHasCameraPermission(true);
+    // Reset state each time we open the dialog
+    setHasCameraPermission(null); 
+    
+    // Stop any existing stream before requesting a new one
+    if (videoRef.current && videoRef.current.srcObject) {
+        const stream = videoRef.current.srcObject as MediaStream;
+        stream.getTracks().forEach(track => track.stop());
+    }
 
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-        }
-      } catch (error) {
-        console.error('Error accessing camera:', error);
-        setHasCameraPermission(false);
-        toast({
-          variant: 'destructive',
-          title: 'Camera Access Denied',
-          description: 'Please enable camera permissions in your browser settings.',
-        });
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      setHasCameraPermission(true);
+
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
       }
-    };
+    } catch (error) {
+      console.error('Error accessing camera:', error);
+      setHasCameraPermission(false);
+      toast({
+        variant: 'destructive',
+        title: 'Camera Access Denied',
+        description: 'Please enable camera permissions in your browser settings.',
+      });
+    }
+  };
 
   const handleCapture = () => {
     if (videoRef.current && canvasRef.current) {
@@ -82,10 +90,12 @@ export default function ProfilePage() {
           description: 'Your new profile picture has been set.',
         });
       }
-       if (videoRef.current && videoRef.current.srcObject) {
-            const stream = videoRef.current.srcObject as MediaStream;
-            stream.getTracks().forEach(track => track.stop());
-       }
+      // Stop the camera stream after capture
+      if (videoRef.current && videoRef.current.srcObject) {
+          const stream = videoRef.current.srcObject as MediaStream;
+          stream.getTracks().forEach(track => track.stop());
+      }
+      setIsCameraDialogOpen(false); // Close the dialog
     }
   };
 
@@ -145,9 +155,9 @@ export default function ProfilePage() {
                             <input id="file-upload" type="file" accept="image/*" className="sr-only" onChange={handleFileChange} />
                         </label>
                     </Button>
-                     <AlertDialog>
+                     <AlertDialog open={isCameraDialogOpen} onOpenChange={setIsCameraDialogOpen}>
                         <AlertDialogTrigger asChild>
-                            <Button onClick={getCameraPermission}>
+                            <Button onClick={() => { setIsCameraDialogOpen(true); getCameraPermission(); }}>
                                 <Camera className="mr-2 h-4 w-4"/> Take Photo
                             </Button>
                         </AlertDialogTrigger>
@@ -172,7 +182,7 @@ export default function ProfilePage() {
                             </div>
                             <AlertDialogFooter>
                                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                <AlertDialogAction onClick={handleCapture} disabled={hasCameraPermission === null || hasCameraPermission === false}>
+                                <AlertDialogAction onClick={handleCapture} disabled={hasCameraPermission !== true}>
                                     Capture & Save
                                 </AlertDialogAction>
                             </AlertDialogFooter>
