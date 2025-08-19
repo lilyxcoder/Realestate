@@ -1,26 +1,41 @@
+
+'use client';
+
 import { getPropertyById, getAgentById } from '@/lib/data';
-import { notFound } from 'next/navigation';
+import { notFound, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Badge } from '@/components/ui/badge';
-import { BedDouble, Bath, SquareGanttChart, MapPin, CheckCircle } from 'lucide-react';
+import { BedDouble, Bath, SquareGanttChart, MapPin, CheckCircle, ArrowLeft } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { SimilarProperties } from '@/components/properties/SimilarProperties';
 import { Card, CardContent } from '@/components/ui/card';
 import { InvestmentDetails } from '@/components/properties/InvestmentDetails';
+import { Button } from '@/components/ui/button';
+import { useEffect, useState } from 'react';
+import type { Property } from '@/lib/types';
 
-export default async function PropertyDetailsPage({ params }: { params: { id: string } }) {
-  const property = await getPropertyById(params.id);
 
-  if (!property) {
-    notFound();
-  }
+export default function PropertyDetailsPage({ params }: { params: { id: string } }) {
+  const router = useRouter();
+  const [property, setProperty] = useState<Property | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const agent = await getAgentById(property.agentId);
+  useEffect(() => {
+    const fetchProperty = async () => {
+      const prop = await getPropertyById(params.id);
+      if (!prop) {
+        notFound();
+      }
+      setProperty(prop);
+      setLoading(false);
+    };
+    fetchProperty();
+  }, [params.id]);
 
-  if (!agent) {
-    // Or handle this case gracefully, maybe with a default agent display
-    notFound();
+
+  if (loading || !property) {
+    return <div>Loading...</div>;
   }
   
   const propertyDetailsForAI = {
@@ -37,6 +52,12 @@ export default async function PropertyDetailsPage({ params }: { params: { id: st
   return (
     <div className="bg-white">
       <div className="container mx-auto px-4 py-8 md:py-12">
+        <div className="flex items-center gap-4 mb-8">
+            <Button variant="outline" size="icon" onClick={() => router.back()}>
+                <ArrowLeft className="h-4 w-4" />
+                <span className="sr-only">Return to previous page</span>
+            </Button>
+        </div>
         <div className="mb-8">
             <h1 className="text-4xl font-bold mb-2">{property.title}</h1>
             <div className="flex items-center gap-2 text-muted-foreground">

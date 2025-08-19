@@ -1,3 +1,4 @@
+
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Property } from '@/lib/types';
@@ -5,12 +6,34 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { Badge } from '@/components/ui/badge';
 import { BedDouble, Bath, SquareGanttChart } from 'lucide-react';
 import { Button } from '../ui/button';
+import { Skeleton } from '../ui/skeleton';
 
 interface PropertyCardProps {
-  property: Property;
+  property: Property | null;
 }
 
 export function PropertyCard({ property }: PropertyCardProps) {
+  if (!property) {
+    return (
+      <Card className="overflow-hidden shadow-lg flex flex-col h-full">
+        <Skeleton className="h-56 w-full" />
+        <CardContent className="p-6 flex-grow space-y-4">
+          <Skeleton className="h-6 w-3/4" />
+          <Skeleton className="h-8 w-1/2" />
+          <Skeleton className="h-10 w-full" />
+          <div className="flex justify-around items-center border-t border-b py-3 text-sm">
+            <Skeleton className="h-5 w-1/4" />
+            <Skeleton className="h-5 w-1/4" />
+            <Skeleton className="h-5 w-1/4" />
+          </div>
+        </CardContent>
+        <CardFooter className="p-6 pt-0">
+          <Skeleton className="h-10 w-full" />
+        </CardFooter>
+      </Card>
+    );
+  }
+
   return (
     <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col h-full">
       <CardHeader className="p-0 relative">
