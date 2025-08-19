@@ -8,6 +8,10 @@ export function Header() {
     { href: '/', label: 'Home' },
     { href: '/properties', label: 'Properties' },
     { href: '/agents', label: 'Agents' },
+    { href: '/pricing', label: 'Pricing' },
+    { href: '/faq', label: 'FAQ' },
+    { href: '/about', label: 'About Us' },
+    { href: '/contact', label: 'Contact Us' },
   ];
 
   return (
