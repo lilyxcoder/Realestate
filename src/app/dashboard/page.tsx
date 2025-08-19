@@ -5,9 +5,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { DollarSign, Wallet, ArrowDown, ArrowUp, BarChart, Bell } from "lucide-react";
+import { DollarSign, Wallet, ArrowDown, ArrowUp, BarChart, Bell, ArrowLeft } from "lucide-react";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Bar, BarChart as RechartsBarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import Link from "next/link";
 
 const chartData = [
   { month: "January", total: 1200 },
@@ -36,7 +37,15 @@ export default function DashboardPage() {
   return (
     <div className="space-y-8">
         <header className="flex items-center justify-between">
-            <h1 className="text-3xl font-bold">Dashboard</h1>
+            <div className="flex items-center gap-4">
+                <Button variant="outline" size="icon" asChild>
+                    <Link href="/">
+                        <ArrowLeft className="h-4 w-4" />
+                        <span className="sr-only">Return to previous page</span>
+                    </Link>
+                </Button>
+                <h1 className="text-3xl font-bold">Dashboard</h1>
+            </div>
             <div className="flex items-center gap-4">
                 <div className="text-right">
                     <p className="font-bold text-lg">John Doe</p>
@@ -158,3 +167,5 @@ export default function DashboardPage() {
     </div>
   );
 }
+
+  
