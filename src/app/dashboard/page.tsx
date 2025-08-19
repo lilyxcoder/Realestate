@@ -9,6 +9,7 @@ import { DollarSign, Wallet, ArrowDown, ArrowUp, BarChart, Bell, ArrowLeft } fro
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Bar, BarChart as RechartsBarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const chartData = [
   { month: "January", total: 1200 },
@@ -34,15 +35,15 @@ const transactions = [
 ];
 
 export default function DashboardPage() {
+  const router = useRouter();
+
   return (
     <div className="space-y-8">
         <header className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-                <Button variant="outline" size="icon" asChild>
-                    <Link href="/">
-                        <ArrowLeft className="h-4 w-4" />
-                        <span className="sr-only">Return to previous page</span>
-                    </Link>
+                <Button variant="outline" size="icon" onClick={() => router.back()}>
+                    <ArrowLeft className="h-4 w-4" />
+                    <span className="sr-only">Return to previous page</span>
                 </Button>
                 <h1 className="text-3xl font-bold">Dashboard</h1>
             </div>
@@ -167,5 +168,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-
-  
