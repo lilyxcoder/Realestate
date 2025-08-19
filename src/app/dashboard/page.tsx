@@ -1,19 +1,160 @@
 
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import { DollarSign, Wallet, ArrowDown, ArrowUp, BarChart, Bell } from "lucide-react";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { Bar, BarChart as RechartsBarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
+
+const chartData = [
+  { month: "January", total: 1200 },
+  { month: "February", total: 1800 },
+  { month: "March", total: 1500 },
+  { month: "April", total: 2200 },
+  { month: "May", total: 2500 },
+  { month: "June", total: 1900 },
+];
+
+const chartConfig = {
+  total: {
+    label: "Total Invest",
+    color: "hsl(var(--chart-1))",
+  },
+};
+
+const transactions = [
+    { id: "TRZ1234", date: "2024-07-22", amount: 2500, type: "Deposit", status: "Completed" },
+    { id: "TRZ5678", date: "2024-07-21", amount: 500, type: "Investment", status: "Pending" },
+    { id: "TRZ9101", date: "2024-07-20", amount: 150, type: "Withdrawal", status: "Completed" },
+    { id: "TRZ1121", date: "2024-07-19", amount: 3000, type: "Deposit", status: "Completed" },
+];
 
 export default function DashboardPage() {
-  const router = useRouter();
-
-  useEffect(() => {
-    router.replace('/dashboard/deposit');
-  }, [router]);
-
   return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-15rem)]">
-      <p>Redirecting to your dashboard...</p>
+    <div className="space-y-8">
+        <header className="flex items-center justify-between">
+            <h1 className="text-3xl font-bold">Dashboard</h1>
+            <div className="flex items-center gap-4">
+                <div className="text-right">
+                    <p className="font-bold text-lg">John Doe</p>
+                    <p className="text-sm text-muted-foreground">$15,231.89</p>
+                </div>
+                <Button variant="ghost" size="icon">
+                    <Bell className="h-6 w-6" />
+                </Button>
+            </div>
+        </header>
+
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Current Balance</CardTitle>
+            <DollarSign className="h-5 w-5 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">$15,231.89</div>
+            <p className="text-xs text-muted-foreground">+20.1% from last month</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Invest</CardTitle>
+            <BarChart className="h-5 w-5 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">$10,500.00</div>
+             <p className="text-xs text-muted-foreground">+15% from last month</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Deposit</CardTitle>
+            <ArrowDown className="h-5 w-5 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">$25,350.00</div>
+            <p className="text-xs text-muted-foreground">+180.1% from last month</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Withdraw</CardTitle>
+            <ArrowUp className="h-5 w-5 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">$8,125.00</div>
+             <p className="text-xs text-muted-foreground">+35% from last month</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
+        <Card className="lg:col-span-4">
+          <CardHeader>
+            <CardTitle>Investment Statistics</CardTitle>
+          </CardHeader>
+          <CardContent className="pl-2">
+             <ChartContainer config={chartConfig} className="h-[300px] w-full">
+                <RechartsBarChart accessibilityLayer data={chartData}>
+                    <XAxis
+                    dataKey="month"
+                    tickLine={false}
+                    axisLine={false}
+                    tickMargin={8}
+                    tickFormatter={(value) => value.slice(0, 3)}
+                    />
+                    <YAxis
+                    tickLine={false}
+                    axisLine={false}
+                    tickMargin={8}
+                    tickFormatter={(value) => `$${value / 1000}k`}
+                    />
+                    <ChartTooltip
+                    cursor={false}
+                    content={<ChartTooltipContent indicator="dot" />}
+                    />
+                    <Bar dataKey="total" fill="var(--color-total)" radius={4} />
+                </RechartsBarChart>
+            </ChartContainer>
+          </CardContent>
+        </Card>
+        <Card className="lg:col-span-3">
+          <CardHeader>
+            <CardTitle>Latest Transactions</CardTitle>
+            <CardDescription>A summary of your most recent transactions.</CardDescription>
+          </CardHeader>
+          <CardContent>
+             <Table>
+                <TableHeader>
+                    <TableRow>
+                    <TableHead>Type</TableHead>
+                    <TableHead>Amount</TableHead>
+                    <TableHead>Status</TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    {transactions.slice(0, 4).map((transaction) => (
+                    <TableRow key={transaction.id}>
+                        <TableCell>
+                            <div className="font-medium">{transaction.type}</div>
+                            <div className="text-sm text-muted-foreground">{transaction.date}</div>
+                        </TableCell>
+                        <TableCell>${transaction.amount.toFixed(2)}</TableCell>
+                        <TableCell>
+                            <Badge variant={transaction.status === 'Completed' ? 'default' : 'secondary'} className={`${transaction.status === 'Completed' ? 'bg-green-500/20 text-green-700' : 'bg-yellow-500/20 text-yellow-700'}`}>
+                                {transaction.status}
+                            </Badge>
+                        </TableCell>
+                    </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
