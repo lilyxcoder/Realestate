@@ -107,6 +107,14 @@ export default function ProfilePage() {
     }
   };
 
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    toast({
+        title: "Profile Updated",
+        description: "Your changes have been saved successfully.",
+    });
+  }
+
   return (
     <div className="space-y-8">
       <div className="flex items-center gap-4">
@@ -179,7 +187,7 @@ export default function ProfilePage() {
           </div>
           
           {/* Form Section */}
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                     <Label htmlFor="firstName">First Name</Label>
