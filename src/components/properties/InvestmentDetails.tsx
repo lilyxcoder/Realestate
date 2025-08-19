@@ -1,8 +1,10 @@
+
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "../ui/button";
+import Link from "next/link";
 
 interface InvestmentDetailsProps {
   price: number;
@@ -31,7 +33,9 @@ export function InvestmentDetails({ price }: InvestmentDetailsProps) {
             <p className="font-semibold text-primary">14-Day Profit Cashback</p>
             <p className="text-sm text-muted-foreground">A 20% cashback on your profit is guaranteed within 14 days.</p>
         </div>
-        <Button size="lg" className="w-full">Invest Now</Button>
+        <Button asChild size="lg" className="w-full">
+            <Link href="/login">Invest Now</Link>
+        </Button>
       </CardContent>
     </Card>
   );
