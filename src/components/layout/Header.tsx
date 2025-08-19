@@ -1,9 +1,16 @@
+
+"use client";
+
 import Link from 'next/link';
-import { Building2, Menu } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import { Building2, Menu, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 export function Header() {
+  const pathname = usePathname();
+  const isOnDashboard = pathname.startsWith('/dashboard');
+
   const navLinks = [
     { href: '/', label: 'Home' },
     { href: '/properties', label: 'Properties' },
@@ -29,8 +36,22 @@ export function Header() {
           ))}
         </nav>
         <div className="hidden md:flex items-center gap-2">
-           <Button variant="ghost" asChild><Link href="/login">Login</Link></Button>
-           <Button asChild><Link href="/signup">Sign Up</Link></Button>
+           {isOnDashboard ? (
+             <>
+               <Button variant="ghost" asChild><Link href="/login">Logout</Link></Button>
+               <Button variant="outline" size="icon" asChild>
+                <Link href="/dashboard/profile">
+                  <User className="h-5 w-5" />
+                  <span className="sr-only">Profile Settings</span>
+                </Link>
+               </Button>
+             </>
+           ) : (
+             <>
+               <Button variant="ghost" asChild><Link href="/login">Login</Link></Button>
+               <Button asChild><Link href="/signup">Sign Up</Link></Button>
+             </>
+           )}
         </div>
         <div className="md:hidden">
           <Sheet>
@@ -48,8 +69,22 @@ export function Header() {
                 ))}
               </nav>
                <div className="flex flex-col gap-2 mt-8">
-                 <Button variant="ghost" asChild><Link href="/login">Login</Link></Button>
-                 <Button asChild><Link href="/signup">Sign Up</Link></Button>
+                 {isOnDashboard ? (
+                    <>
+                      <Button variant="ghost" asChild><Link href="/login">Logout</Link></Button>
+                      <Button variant="outline" asChild>
+                        <Link href="/dashboard/profile">
+                          <User className="mr-2 h-5 w-5" />
+                          Profile Settings
+                        </Link>
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <Button variant="ghost" asChild><Link href="/login">Login</Link></Button>
+                      <Button asChild><Link href="/signup">Sign Up</Link></Button>
+                    </>
+                  )}
               </div>
             </SheetContent>
           </Sheet>
