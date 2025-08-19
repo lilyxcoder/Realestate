@@ -40,7 +40,10 @@ export default function InvestedPropertiesPage() {
         </div>
         <Card className="inline-block">
             <CardContent className="p-3">
-                <p className="text-sm font-medium">Total Invested: <Badge variant="secondary">{investedProperties.length}</Badge></p>
+                <div className="flex items-center gap-2 text-sm font-medium">
+                  <span>Total Invested:</span>
+                  <Badge variant="secondary">{investedProperties.length}</Badge>
+                </div>
             </CardContent>
         </Card>
       </div>
