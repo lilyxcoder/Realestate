@@ -18,7 +18,7 @@ export function AboutRealvest() {
               alt="Modern building exterior"
               width={600}
               height={400}
-              className="rounded-lg shadow-xl w-full"
+              className="rounded-lg shadow-xl w-full h-auto"
               data-ai-hint="modern building"
             />
             <div className="absolute top-4 left-4 bg-primary/80 text-primary-foreground p-4 rounded-lg shadow-lg backdrop-blur-sm">
