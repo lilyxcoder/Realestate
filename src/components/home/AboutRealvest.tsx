@@ -14,7 +14,7 @@ export function AboutRealvest() {
           </div>
           <div className="relative">
             <Image 
-              src="/images/1721915950882.png" 
+              src="https://placehold.co/600x400.png" 
               alt="Modern building exterior"
               width={600}
               height={400}
