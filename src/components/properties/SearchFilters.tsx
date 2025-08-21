@@ -1,16 +1,38 @@
+
 "use client";
 
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search } from "lucide-react";
 
 export function SearchFilters() {
+  const router = useRouter();
+  const [location, setLocation] = useState('');
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const params = new URLSearchParams();
+    if (location) {
+      params.set('location', location);
+    }
+    router.push(`/properties?${params.toString()}`);
+  };
+
+
   return (
-    <form className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
+    <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
       <div className="w-full">
         <label htmlFor="location" className="text-sm font-medium text-white block mb-2 text-left">Location</label>
-        <Input id="location" placeholder="Enter a city or neighborhood" className="bg-white/80 text-gray-800 placeholder:text-gray-500"/>
+        <Input 
+          id="location" 
+          placeholder="Enter a city or neighborhood" 
+          className="bg-white/80 text-gray-800 placeholder:text-gray-500"
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+        />
       </div>
       <div className="w-full">
         <label htmlFor="property-type" className="text-sm font-medium text-white block mb-2 text-left">Property Type</label>
