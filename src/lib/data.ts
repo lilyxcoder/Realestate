@@ -1,3 +1,4 @@
+
 import type { Property, Agent, Testimonial } from './types';
 
 const agents: Agent[] = [
@@ -1786,4 +1787,3 @@ export const getAgentById = async (id: string): Promise<Agent | undefined> => {
 export const getTestimonials = async (): Promise<Testimonial[]> => {
   return testimonials;
 };
-
