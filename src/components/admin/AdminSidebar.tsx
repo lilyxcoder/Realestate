@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Building2, LayoutDashboard, Landmark, ArrowLeftRight, FileText, Users, BarChart, Settings, ShieldCheck } from 'lucide-react';
+import { Building2, LayoutDashboard, Landmark, ArrowLeftRight, FileText, Users, BarChart, Settings, ShieldCheck, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const navLinks = [
@@ -71,10 +71,16 @@ export function AdminSidebar() {
             </ul>
         </div>
       </nav>
-       <div className="p-4 border-t">
+       <div className="p-4 border-t space-y-2">
         <Link href="/">
             <Button variant="outline" className="w-full">
-                Exit Admin Panel
+                Exit to Main Site
+            </Button>
+        </Link>
+        <Link href="/admin">
+            <Button variant="ghost" className="w-full justify-center">
+                <LogOut className="mr-2 h-5 w-5" />
+                Logout
             </Button>
         </Link>
       </div>
