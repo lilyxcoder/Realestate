@@ -1,5 +1,5 @@
 
-import type { Property, Agent, Testimonial, User } from './types';
+import type { Property, Agent, Testimonial } from './types';
 
 const agents: Agent[] = [
   {
@@ -1764,14 +1764,6 @@ const testimonials: Testimonial[] = [
   },
 ];
 
-const users: User[] = [
-  { id: '1', name: 'Admin User', email: 'admin@example.com', role: 'Admin', status: 'Active', investmentTier: 'Premium', totalInvested: 150000, joinedDate: '2023-01-15' },
-  { id: '2', name: 'John Doe', email: 'john.doe@example.com', role: 'User', status: 'Active', investmentTier: 'Golden', totalInvested: 75000, joinedDate: '2023-03-22' },
-  { id: '3', name: 'Jane Smith', email: 'jane.smith@example.com', role: 'User', status: 'Active', investmentTier: 'Starter', totalInvested: 15000, joinedDate: '2023-05-10' },
-  { id: '4', name: 'Michael Johnson', email: 'michael.j@example.com', role: 'User', status: 'Inactive', investmentTier: 'None', totalInvested: 0, joinedDate: '2023-07-01' },
-  { id: '5', name: 'Emily Davis', email: 'emily.d@example.com', role: 'User', status: 'Suspended', investmentTier: 'Golden', totalInvested: 95000, joinedDate: '2023-02-18' },
-];
-
 
 export const getProperties = async (): Promise<Property[]> => {
   return properties;
@@ -1795,8 +1787,4 @@ export const getAgentById = async (id: string): Promise<Agent | undefined> => {
 
 export const getTestimonials = async (): Promise<Testimonial[]> => {
   return testimonials;
-};
-
-export const getUsers = async (): Promise<User[]> => {
-  return users;
 };
