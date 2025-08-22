@@ -35,3 +35,14 @@ export interface Testimonial {
   image: string;
   data_ai_hint?: string;
 }
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: 'User' | 'Admin';
+  status: 'Active' | 'Inactive' | 'Suspended';
+  investmentTier: 'Starter' | 'Golden' | 'Premium' | 'None';
+  totalInvested: number;
+  joinedDate: string;
+}
