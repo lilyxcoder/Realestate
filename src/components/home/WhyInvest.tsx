@@ -32,7 +32,7 @@ export function WhyInvest() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
           {features.map((feature) => (
-            <div key={feature.title} className="flex flex-col items-center p-6 bg-background rounded-lg shadow-sm">
+            <div key={feature.title} className="flex flex-col items-center p-6 bg-background rounded-lg shadow-sm border">
               <div className="mb-4">{feature.icon}</div>
               <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
               <p className="text-muted-foreground">{feature.description}</p>
