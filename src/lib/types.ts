@@ -35,3 +35,13 @@ export interface Testimonial {
   image: string;
   data_ai_hint?: string;
 }
+
+export interface User {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  role: 'User' | 'Admin';
+  lastLogin: string;
+  status: 'Active' | 'Suspended' | 'Banned';
+}
