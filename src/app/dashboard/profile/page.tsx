@@ -32,11 +32,25 @@ export default function ProfilePage() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
+  const [firstName, setFirstName] = useState("John");
+  const [lastName, setLastName] = useState("Doe");
+  const [username, setUsername] = useState("johndoe");
+  const [email, setEmail] = useState("johndoe@example.com");
+
   useEffect(() => {
     // This effect handles camera cleanup when the dialog is closed.
     let stream: MediaStream | null = null;
     if (videoRef.current && videoRef.current.srcObject) {
       stream = videoRef.current.srcObject as MediaStream;
+    }
+
+    const user = localStorage.getItem("user");
+    if (user) {
+        const userData = JSON.parse(user);
+        setFirstName(userData.firstName);
+        setLastName(userData.lastName);
+        setEmail(userData.email);
+        setUsername(userData.email.split('@')[0]);
     }
 
     return () => {
@@ -198,15 +212,15 @@ export default function ProfilePage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                     <Label htmlFor="firstName">First Name</Label>
-                    <Input id="firstName" defaultValue="John" />
+                    <Input id="firstName" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
                 </div>
                 <div>
                     <Label htmlFor="lastName">Last Name</Label>
-                    <Input id="lastName" defaultValue="Doe" />
+                    <Input id="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} />
                 </div>
                 <div>
                     <Label htmlFor="username">Username</Label>
-                    <Input id="username" defaultValue="johndoe" />
+                    <Input id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
                 </div>
                 <div>
                     <Label htmlFor="phone">Phone</Label>
@@ -214,7 +228,7 @@ export default function ProfilePage() {
                 </div>
                  <div className="md:col-span-2">
                     <Label htmlFor="email">Email</Label>
-                    <Input id="email" type="email" defaultValue="johndoe@example.com" disabled />
+                    <Input id="email" type="email" value={email} disabled />
                 </div>
                 <div className="md:col-span-2">
                     <Label htmlFor="address">Address</Label>

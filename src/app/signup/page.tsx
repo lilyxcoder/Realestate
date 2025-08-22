@@ -36,6 +36,18 @@ export default function SignupPage() {
   const onSubmit = (values: z.infer<typeof signupSchema>) => {
     // Mock registration logic
     console.log("Form submitted with values:", values);
+
+    // Save user info to localStorage
+    try {
+        localStorage.setItem("user", JSON.stringify({
+            firstName: values.firstName,
+            lastName: values.lastName,
+            email: values.email,
+        }));
+    } catch (error) {
+        console.error("Could not save user to localStorage", error);
+    }
+    
     toast({
       title: "Registration Successful!",
       description: "Your account has been created. Please log in.",

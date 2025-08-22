@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -49,6 +49,15 @@ const chartConfig = {
 export default function DashboardPage() {
   const router = useRouter();
   const [hasInvested, setHasInvested] = useState(false);
+  const [userName, setUserName] = useState("John Doe");
+
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (user) {
+      const { firstName, lastName } = JSON.parse(user);
+      setUserName(`${firstName} ${lastName}`);
+    }
+  }, []);
 
   const stats = {
     balance: hasInvested ? 15231.89 : 0,
@@ -72,7 +81,7 @@ export default function DashboardPage() {
             </div>
             <div className="flex items-center gap-4">
                 <div className="text-right">
-                    <p className="font-bold text-lg">John Doe</p>
+                    <p className="font-bold text-lg">{userName}</p>
                     <p className="text-sm text-muted-foreground">${stats.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                 </div>
                 <Button variant="ghost" size="icon">
