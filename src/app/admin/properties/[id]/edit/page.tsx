@@ -1,17 +1,21 @@
 
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, use } from 'react';
 import { getPropertyById } from '@/lib/data';
 import { PropertyForm } from '@/components/admin/PropertyForm';
 import { notFound, useParams } from 'next/navigation';
 import type { Property } from '@/lib/types';
 
-export default function EditPropertyPage() {
+const EditPropertyPage=({params}:{params:Promise<{id:string}>}) =>{
   const [property, setProperty] = useState<Property | null>(null);
   const [loading, setLoading] = useState(true);
-  const params = useParams();
-  const id = params.id as string;
+
+  const {id}=use(params)
+
+  
+
+  
 
   useEffect(() => {
     if (!id) return;
@@ -32,6 +36,11 @@ export default function EditPropertyPage() {
     fetchProperty();
   }, [id]);
 
+
+
+
+
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -47,3 +56,5 @@ export default function EditPropertyPage() {
     </div>
   );
 }
+
+export default EditPropertyPage
