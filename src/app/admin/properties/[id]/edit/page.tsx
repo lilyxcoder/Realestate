@@ -1,12 +1,11 @@
 
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, use } from 'react';
 import { getPropertyById } from '@/lib/data';
 import { PropertyForm } from '@/components/admin/PropertyForm';
 import { notFound } from 'next/navigation';
 import type { Property } from '@/lib/types';
-import { use } from 'react';
 
 export default function EditPropertyPage({ params }: { params: { id: string } }) {
   const [property, setProperty] = useState<Property | null>(null);
@@ -15,6 +14,7 @@ export default function EditPropertyPage({ params }: { params: { id: string } })
 
   useEffect(() => {
     const fetchProperty = async () => {
+      setLoading(true);
       const initialProperty = await getPropertyById(id);
       
       if (!initialProperty) {
@@ -22,7 +22,7 @@ export default function EditPropertyPage({ params }: { params: { id: string } })
         return;
       }
 
-      // Check localStorage for any saved edits
+      // In a real app, you'd fetch, but here we simulate the "live editing" by checking localStorage.
       try {
         const storedProperties = JSON.parse(localStorage.getItem('properties') || '[]');
         const storedProperty = storedProperties.find((p: Property) => p.id === id);
