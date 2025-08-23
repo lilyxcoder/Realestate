@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { MoreHorizontal, PlusCircle } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default async function AdminPropertiesPage() {
   const properties = await getProperties();
@@ -15,9 +16,11 @@ export default async function AdminPropertiesPage() {
     <div className="space-y-8">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Manage Properties</h1>
-        <Button>
-            <PlusCircle className="mr-2 h-5 w-5" />
-            Add New Property
+        <Button asChild>
+            <Link href="/admin/properties/new">
+                <PlusCircle className="mr-2 h-5 w-5" />
+                Add New Property
+            </Link>
         </Button>
       </div>
       
