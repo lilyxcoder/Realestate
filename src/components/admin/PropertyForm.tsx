@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useForm, useFieldArray } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
@@ -12,8 +12,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
-import { Trash } from 'lucide-react';
 import type { Property } from '@/lib/types';
+import { useRouter } from 'next/navigation';
 
 const propertySchema = z.object({
   title: z.string().min(1, "Title is required."),
@@ -32,6 +32,7 @@ const propertySchema = z.object({
 
 export function PropertyForm({ property }: { property?: Property }) {
   const { toast } = useToast();
+  const router = useRouter();
   const isEditMode = !!property;
 
   const form = useForm<z.infer<typeof propertySchema>>({
@@ -51,12 +52,34 @@ export function PropertyForm({ property }: { property?: Property }) {
   });
 
   const onSubmit = (values: z.infer<typeof propertySchema>) => {
-    // In a real app, you would handle file uploads and form submission to your backend here.
-    console.log(values);
-    toast({
-      title: `Property ${isEditMode ? 'Updated' : 'Created'}`,
-      description: `The property "${values.title}" has been saved successfully.`,
-    });
+    try {
+        if (isEditMode && property) {
+            const storedProperties = JSON.parse(localStorage.getItem('properties') || '[]');
+            const propertyIndex = storedProperties.findIndex((p: Property) => p.id === property.id);
+            
+            const updatedProperty = { ...property, ...values };
+
+            if (propertyIndex > -1) {
+                storedProperties[propertyIndex] = updatedProperty;
+            } else {
+                storedProperties.push(updatedProperty);
+            }
+            localStorage.setItem('properties', JSON.stringify(storedProperties));
+        }
+        
+        toast({
+            title: `Property ${isEditMode ? 'Updated' : 'Created'}`,
+            description: `The property "${values.title}" has been saved successfully.`,
+        });
+        router.push('/admin/properties');
+    } catch (error) {
+        console.error("Failed to save property to localStorage", error);
+        toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Could not save property changes.",
+        });
+    }
   };
 
   return (

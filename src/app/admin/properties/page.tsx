@@ -1,16 +1,47 @@
 
+'use client';
+
+import { useEffect, useState } from 'react';
 import { getProperties } from '@/lib/data';
 import type { Property } from '@/lib/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { MoreHorizontal, PlusCircle, Pencil } from 'lucide-react';
+import { PlusCircle, Pencil } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export default async function AdminPropertiesPage() {
-  const properties = await getProperties();
+export default function AdminPropertiesPage() {
+  const [properties, setProperties] = useState<Property[]>([]);
+
+  useEffect(() => {
+    const fetchProperties = async () => {
+      const initialProperties = await getProperties();
+      
+      // In a real app, you would merge this with data from your database.
+      // For now, we overlay localStorage changes on top of the static data.
+      try {
+        const storedProperties = JSON.parse(localStorage.getItem('properties') || '[]');
+        const mergedProperties = initialProperties.map(p => {
+          const stored = storedProperties.find((sp: Property) => sp.id === p.id);
+          return stored || p;
+        });
+        setProperties(mergedProperties);
+      } catch (error) {
+        console.error("Failed to load properties from localStorage", error);
+        setProperties(initialProperties);
+      }
+    };
+    
+    fetchProperties();
+
+    // Listen for storage changes to re-fetch
+    window.addEventListener('storage', fetchProperties);
+    return () => {
+      window.removeEventListener('storage', fetchProperties);
+    }
+  }, []);
 
   return (
     <div className="space-y-8">
