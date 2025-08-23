@@ -6,17 +6,18 @@ import { getPropertyById } from '@/lib/data';
 import { PropertyForm } from '@/components/admin/PropertyForm';
 import { notFound } from 'next/navigation';
 import type { Property } from '@/lib/types';
+import { use } from 'react';
 
 export default function EditPropertyPage({ params }: { params: { id: string } }) {
   const [property, setProperty] = useState<Property | null>(null);
   const [loading, setLoading] = useState(true);
+  const id = params.id;
 
   useEffect(() => {
     const fetchProperty = async () => {
-      const initialProperty = await getPropertyById(params.id);
+      const initialProperty = await getPropertyById(id);
       
       if (!initialProperty) {
-        // We can't use notFound() directly in useEffect, so we'll handle loading state
         setLoading(false); 
         return;
       }
@@ -24,7 +25,7 @@ export default function EditPropertyPage({ params }: { params: { id: string } })
       // Check localStorage for any saved edits
       try {
         const storedProperties = JSON.parse(localStorage.getItem('properties') || '[]');
-        const storedProperty = storedProperties.find((p: Property) => p.id === params.id);
+        const storedProperty = storedProperties.find((p: Property) => p.id === id);
         setProperty(storedProperty || initialProperty);
       } catch (error) {
         console.error("Failed to parse properties from localStorage", error);
@@ -34,8 +35,10 @@ export default function EditPropertyPage({ params }: { params: { id: string } })
       setLoading(false);
     };
 
-    fetchProperty();
-  }, [params.id]);
+    if (id) {
+      fetchProperty();
+    }
+  }, [id]);
 
   if (loading) {
     return <div>Loading...</div>;

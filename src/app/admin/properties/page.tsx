@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { getProperties } from '@/lib/data';
 import type { Property } from '@/lib/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -15,33 +15,50 @@ import Link from 'next/link';
 export default function AdminPropertiesPage() {
   const [properties, setProperties] = useState<Property[]>([]);
 
-  useEffect(() => {
-    const fetchProperties = async () => {
-      const initialProperties = await getProperties();
-      
-      // In a real app, you would merge this with data from your database.
-      // For now, we overlay localStorage changes on top of the static data.
-      try {
-        const storedProperties = JSON.parse(localStorage.getItem('properties') || '[]');
-        const mergedProperties = initialProperties.map(p => {
-          const stored = storedProperties.find((sp: Property) => sp.id === p.id);
-          return stored || p;
-        });
-        setProperties(mergedProperties);
-      } catch (error) {
-        console.error("Failed to load properties from localStorage", error);
+  const fetchProperties = useCallback(async () => {
+    const initialProperties = await getProperties();
+    
+    // In a real app, you would merge this with data from your database.
+    // For now, we overlay localStorage changes on top of the static data.
+    try {
+      const storedPropertiesString = localStorage.getItem('properties');
+      if (storedPropertiesString) {
+        const storedProperties = JSON.parse(storedPropertiesString);
+        
+        // Create a map of stored properties by ID for efficient lookup
+        const storedMap = new Map(storedProperties.map((p: Property) => [p.id, p]));
+        
+        // Merge initial properties with stored ones
+        const mergedProperties = initialProperties.map(p => storedMap.get(p.id) || p);
+        
+        // Add any new properties from localStorage that aren't in the initial list
+        const newProperties = storedProperties.filter((p: Property) => !initialProperties.some(ip => ip.id === p.id));
+        
+        setProperties([...mergedProperties, ...newProperties]);
+      } else {
         setProperties(initialProperties);
       }
-    };
-    
+    } catch (error) {
+      console.error("Failed to load properties from localStorage", error);
+      setProperties(initialProperties);
+    }
+  }, []);
+
+  useEffect(() => {
     fetchProperties();
 
     // Listen for storage changes to re-fetch
-    window.addEventListener('storage', fetchProperties);
+    const handleStorageChange = (event: StorageEvent) => {
+      if (event.key === 'properties') {
+        fetchProperties();
+      }
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
     return () => {
-      window.removeEventListener('storage', fetchProperties);
+      window.removeEventListener('storage', handleStorageChange);
     }
-  }, []);
+  }, [fetchProperties]);
 
   return (
     <div className="space-y-8">
