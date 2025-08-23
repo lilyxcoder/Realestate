@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import { Trash } from 'lucide-react';
+import type { Property } from '@/lib/types';
 
 const propertySchema = z.object({
   title: z.string().min(1, "Title is required."),
@@ -29,8 +30,9 @@ const propertySchema = z.object({
   galleryImages: z.any().optional(),
 });
 
-export function PropertyForm({ property }: { property?: any }) {
+export function PropertyForm({ property }: { property?: Property }) {
   const { toast } = useToast();
+  const isEditMode = !!property;
 
   const form = useForm<z.infer<typeof propertySchema>>({
     resolver: zodResolver(propertySchema),
@@ -52,7 +54,7 @@ export function PropertyForm({ property }: { property?: any }) {
     // In a real app, you would handle file uploads and form submission to your backend here.
     console.log(values);
     toast({
-      title: `Property ${property ? 'Updated' : 'Created'}`,
+      title: `Property ${isEditMode ? 'Updated' : 'Created'}`,
       description: `The property "${values.title}" has been saved successfully.`,
     });
   };
@@ -60,8 +62,8 @@ export function PropertyForm({ property }: { property?: any }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{property ? 'Edit Property' : 'Property Details'}</CardTitle>
-        <CardDescription>Fill out the form below to {property ? 'update the' : 'add a new'} property.</CardDescription>
+        <CardTitle>{isEditMode ? 'Edit Property' : 'Property Details'}</CardTitle>
+        <CardDescription>Fill out the form below to {isEditMode ? 'update the' : 'add a new'} property.</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -239,7 +241,7 @@ export function PropertyForm({ property }: { property?: any }) {
             />
 
             <div className="flex justify-end">
-              <Button type="submit">{property ? 'Update' : 'Create'} Property</Button>
+              <Button type="submit">{isEditMode ? 'Update' : 'Create'} Property</Button>
             </div>
           </form>
         </Form>

@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { MoreHorizontal, PlusCircle } from 'lucide-react';
+import { MoreHorizontal, PlusCircle, Pencil } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -63,8 +63,11 @@ export default async function AdminPropertiesPage() {
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    <Button variant="ghost" size="icon">
-                        <MoreHorizontal className="h-4 w-4" />
+                    <Button asChild variant="outline" size="sm">
+                        <Link href={`/admin/properties/${property.id}/edit`}>
+                            <Pencil className="mr-2 h-4 w-4" />
+                            Edit
+                        </Link>
                     </Button>
                   </TableCell>
                 </TableRow>
