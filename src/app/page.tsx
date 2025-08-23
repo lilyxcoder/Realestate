@@ -17,13 +17,13 @@ export default async function Home() {
 
   return (
     <>
-      <section className="relative h-[70vh] min-h-[450px] flex items-center justify-center text-white">
+      <section className="relative h-[70vh] min-h-[450px] flex items-center justify-center text-white overflow-hidden">
         <Image
           src="/images/properties/property-96.jpg"
           alt="Luxury home with a pool at dusk"
-          layout="fill"
-          objectFit="cover"
-          className="absolute z-0"
+          width={1920}
+          height={1080}
+          className="absolute z-0 w-full h-full object-cover"
           data-ai-hint="modern house exterior"
           priority
         />
