@@ -9,13 +9,17 @@ import { WhyInvest } from '@/components/home/WhyInvest';
 import { AboutRealvest } from '@/components/home/AboutRealvest';
 import { SponsorCarousel } from '@/components/home/SponsorCarousel';
 import { LatestNews } from '@/components/home/LatestNews';
+import { getProperties } from '@/lib/data';
 
-export default function Home() {
+export default async function Home() {
+  const properties = await getProperties();
+  const newestProperties = properties.reverse();
+
   return (
     <>
       <section className="relative h-[70vh] min-h-[450px] flex items-center justify-center text-white">
         <Image
-          src="/images/properties/property-96-1.jpg"
+          src="/images/properties/property-96.jpg"
           alt="Luxury home with a pool at dusk"
           layout="fill"
           objectFit="cover"

@@ -6,6 +6,7 @@ import Link from 'next/link';
 
 export async function FeaturedProperties() {
   const properties = await getFeaturedProperties();
+  const newestProperties = properties.reverse();
 
   return (
     <section className="py-16 md:py-24">
@@ -15,7 +16,7 @@ export async function FeaturedProperties() {
           <p className="text-lg text-muted-foreground mt-2">Handpicked properties by our team</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {properties.slice(0, 3).map((property) => (
+          {newestProperties.slice(0, 3).map((property) => (
             <PropertyCard key={property.id} property={property} />
           ))}
         </div>
