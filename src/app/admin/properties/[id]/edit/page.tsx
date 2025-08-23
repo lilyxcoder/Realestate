@@ -10,7 +10,7 @@ import type { Property } from '@/lib/types';
 export default function EditPropertyPage({ params }: { params: { id: string } }) {
   const [property, setProperty] = useState<Property | null>(null);
   const [loading, setLoading] = useState(true);
-  const id = params.id;
+  const id = use(Promise.resolve(params.id));
 
   useEffect(() => {
     const fetchProperty = async () => {
