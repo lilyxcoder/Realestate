@@ -23,17 +23,18 @@ export default function PropertiesPage() {
     const fetchAndFilterProperties = async () => {
       setLoading(true);
       const allProperties = await getProperties();
-      setProperties(allProperties);
+      const reversedProperties = allProperties.reverse(); // Show newest first
+      setProperties(reversedProperties);
 
       const locationQuery = searchParams.get('location')?.toLowerCase() || '';
 
       if (locationQuery) {
-        const filtered = allProperties.filter(p =>
+        const filtered = reversedProperties.filter(p =>
           p.address.toLowerCase().includes(locationQuery)
         );
         setFilteredProperties(filtered);
       } else {
-        setFilteredProperties(allProperties);
+        setFilteredProperties(reversedProperties);
       }
       setLoading(false);
     };

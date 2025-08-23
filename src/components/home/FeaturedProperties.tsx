@@ -1,3 +1,4 @@
+
 import { getFeaturedProperties } from '@/lib/data';
 import { PropertyCard } from '@/components/properties/PropertyCard';
 import { Button } from '@/components/ui/button';

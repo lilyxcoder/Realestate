@@ -39,7 +39,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
       <CardHeader className="p-0 relative">
         <Link href={`/properties/${property.id}`}>
           <Image
-              src="/images/properties/1.jpg"
+            src={property.image}
             alt={property.title}
             width={600}
             height={400}

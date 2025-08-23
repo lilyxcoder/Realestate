@@ -1,3 +1,4 @@
+
 import { FeaturedProperties } from '@/components/home/FeaturedProperties';
 import { OurAgents } from '@/components/home/OurAgents';
 import { Testimonials } from '@/components/home/Testimonials';
@@ -14,7 +15,7 @@ export default function Home() {
     <>
       <section className="relative h-[70vh] min-h-[450px] flex items-center justify-center text-white">
         <Image
-          src="https://placehold.co/1920x1080.png"
+          src="/images/properties/property-96-1.jpg"
           alt="Luxury home with a pool at dusk"
           layout="fill"
           objectFit="cover"
