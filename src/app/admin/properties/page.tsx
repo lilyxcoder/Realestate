@@ -16,41 +16,12 @@ export default function AdminPropertiesPage() {
   const [properties, setProperties] = useState<Property[]>([]);
 
   const fetchProperties = useCallback(async () => {
-    const initialProperties = await getProperties();
-    
-    try {
-      const storedPropertiesString = localStorage.getItem('properties');
-      if (storedPropertiesString) {
-        const storedProperties = JSON.parse(storedPropertiesString) as Property[];
-        const storedMap = new Map(storedProperties.map((p) => [p.id, p]));
-        
-        const merged = initialProperties.map(p => storedMap.get(p.id) || p);
-        
-        const newFromStorage = storedProperties.filter(p => !initialProperties.some(ip => ip.id === p.id));
-        
-        setProperties([...merged, ...newFromStorage].reverse());
-      } else {
-        setProperties(initialProperties.reverse());
-      }
-    } catch (error) {
-      console.error("Failed to load or merge properties from localStorage", error);
-      setProperties(initialProperties.reverse());
-    }
+    const allProperties = await getProperties();
+    setProperties(allProperties.reverse());
   }, []);
 
   useEffect(() => {
     fetchProperties();
-
-    const handleStorageChange = (event: StorageEvent) => {
-      if (event.key === 'properties') {
-        fetchProperties();
-      }
-    };
-    
-    window.addEventListener('storage', handleStorageChange);
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-    }
   }, [fetchProperties]);
 
   return (
