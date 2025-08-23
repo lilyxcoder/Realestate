@@ -18,36 +18,29 @@ export default function AdminPropertiesPage() {
   const fetchProperties = useCallback(async () => {
     const initialProperties = await getProperties();
     
-    // In a real app, you would merge this with data from your database.
-    // For now, we overlay localStorage changes on top of the static data.
     try {
       const storedPropertiesString = localStorage.getItem('properties');
       if (storedPropertiesString) {
-        const storedProperties = JSON.parse(storedPropertiesString);
+        const storedProperties = JSON.parse(storedPropertiesString) as Property[];
+        const storedMap = new Map(storedProperties.map((p) => [p.id, p]));
         
-        // Create a map of stored properties by ID for efficient lookup
-        const storedMap = new Map(storedProperties.map((p: Property) => [p.id, p]));
+        const merged = initialProperties.map(p => storedMap.get(p.id) || p);
         
-        // Merge initial properties with stored ones
-        const mergedProperties = initialProperties.map(p => storedMap.get(p.id) || p);
+        const newFromStorage = storedProperties.filter(p => !initialProperties.some(ip => ip.id === p.id));
         
-        // Add any new properties from localStorage that aren't in the initial list
-        const newProperties = storedProperties.filter((p: Property) => !initialProperties.some(ip => ip.id === p.id));
-        
-        setProperties([...mergedProperties, ...newProperties]);
+        setProperties([...merged, ...newFromStorage].reverse());
       } else {
-        setProperties(initialProperties);
+        setProperties(initialProperties.reverse());
       }
     } catch (error) {
-      console.error("Failed to load properties from localStorage", error);
-      setProperties(initialProperties);
+      console.error("Failed to load or merge properties from localStorage", error);
+      setProperties(initialProperties.reverse());
     }
   }, []);
 
   useEffect(() => {
     fetchProperties();
 
-    // Listen for storage changes to re-fetch
     const handleStorageChange = (event: StorageEvent) => {
       if (event.key === 'properties') {
         fetchProperties();
