@@ -1,20 +1,15 @@
-
+import { AboutRealvest } from '@/components/home/AboutRealvest';
 import { FeaturedProperties } from '@/components/home/FeaturedProperties';
+import { LatestNews } from '@/components/home/LatestNews';
 import { OurAgents } from '@/components/home/OurAgents';
+import { PricingPlans } from '@/components/home/PricingPlans';
+import { SponsorCarousel } from '@/components/home/SponsorCarousel';
 import { Testimonials } from '@/components/home/Testimonials';
+import { WhyInvest } from '@/components/home/WhyInvest';
 import { SearchFilters } from '@/components/properties/SearchFilters';
 import Image from 'next/image';
-import { PricingPlans } from '@/components/home/PricingPlans';
-import { WhyInvest } from '@/components/home/WhyInvest';
-import { AboutRealvest } from '@/components/home/AboutRealvest';
-import { SponsorCarousel } from '@/components/home/SponsorCarousel';
-import { LatestNews } from '@/components/home/LatestNews';
-import { getProperties } from '@/lib/data';
 
 export default async function Home() {
-  const properties = await getProperties();
-  const newestProperties = properties.reverse();
-
   return (
     <>
       <section className="relative h-[70vh] min-h-[450px] flex items-center justify-center text-white overflow-hidden">
@@ -29,8 +24,13 @@ export default async function Home() {
         />
         <div className="absolute inset-0 bg-black/60" />
         <div className="relative z-10 text-center p-4 max-w-4xl mx-auto">
-          <h1 className="text-4xl md:text-6xl font-bold mb-4 drop-shadow-lg">Find Your Dream Home</h1>
-          <p className="text-lg md:text-xl mb-8 drop-shadow-md">We help you find the best properties in town, turning your dreams into reality.</p>
+          <h1 className="text-4xl md:text-6xl font-bold mb-4 drop-shadow-lg">
+            Find Your Dream Home
+          </h1>
+          <p className="text-lg md:text-xl mb-8 drop-shadow-md">
+            We help you find the best properties in town, turning your dreams
+            into reality.
+          </p>
           <div className="bg-white/10 backdrop-blur-sm p-6 rounded-lg">
             <SearchFilters />
           </div>
@@ -43,16 +43,16 @@ export default async function Home() {
       <div className="bg-background">
         <FeaturedProperties />
       </div>
-       <div className="bg-card">
+      <div className="bg-card">
         <AboutRealvest />
       </div>
       <div className="bg-background">
         <PricingPlans />
       </div>
-       <div className="bg-card">
+      <div className="bg-card">
         <Testimonials />
       </div>
-       <div className="bg-background">
+      <div className="bg-background">
         <SponsorCarousel />
       </div>
       <div className="bg-card">

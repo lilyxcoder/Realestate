@@ -1,15 +1,20 @@
-
+import { Badge } from '@/components/ui/badge';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import type { IProperty } from '@/lib/types';
+import { Bath, BedDouble, SquareGanttChart } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import type { Property } from '@/lib/types';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { BedDouble, Bath, SquareGanttChart } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Skeleton } from '../ui/skeleton';
 
 interface PropertyCardProps {
-  property: Property | null;
+  property: IProperty | null;
 }
 
 export function PropertyCard({ property }: PropertyCardProps) {
@@ -37,30 +42,37 @@ export function PropertyCard({ property }: PropertyCardProps) {
   return (
     <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col h-full">
       <CardHeader className="p-0 relative">
-        <Link href={`/properties/${property.id}`}>
+        <Link href={`/properties/${property._id}`}>
           <Image
-            src={property.image}
+            src={property.mainImage.asset.url}
             alt={property.title}
             width={600}
             height={400}
             className="w-full h-56 object-cover"
-            data-ai-hint={property.data_ai_hint}
           />
         </Link>
-        <Badge className="absolute top-4 left-4" variant={property.featured ? 'default' : 'secondary'}>
-          {property.type}
+        <Badge
+          className="absolute top-4 left-4"
+          variant={property.isFeatured ? 'default' : 'secondary'}
+        >
+          {property.propertyType.title}
         </Badge>
       </CardHeader>
       <CardContent className="p-6 flex-grow">
         <CardTitle className="text-xl mb-2">
-          <Link href={`/properties/${property.id}`} className="hover:text-primary transition-colors">
+          <Link
+            href={`/properties/${property._id}`}
+            className="hover:text-primary transition-colors"
+          >
             {property.title}
           </Link>
         </CardTitle>
         <p className="text-2xl font-bold text-primary mb-4">
           ${property.price.toLocaleString()}
         </p>
-        <p className="text-muted-foreground text-sm mb-4 h-10 overflow-hidden">{property.address}</p>
+        <p className="text-muted-foreground text-sm mb-4 h-10 overflow-hidden">
+          {property.address}
+        </p>
 
         <div className="flex justify-around items-center border-t border-b py-3 text-sm text-muted-foreground">
           <div className="flex items-center gap-2">
@@ -79,7 +91,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
       </CardContent>
       <CardFooter className="p-6 pt-0">
         <Button asChild className="w-full">
-          <Link href={`/properties/${property.id}`}>View Details</Link>
+          <Link href={`/properties/${property._id}`}>View Details</Link>
         </Button>
       </CardFooter>
     </Card>
