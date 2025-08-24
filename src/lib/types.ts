@@ -115,6 +115,34 @@ export type ISingleProperty = {
   }[];
 };
 
+export interface IAgent {
+  _id: string;
+  _createdAt: string; // ISO date string
+  profilePhoto?: {
+    asset?: {
+      url: string;
+    };
+  };
+  name: string;
+  title: string;
+  numberOfProperties: number;
+  email: string;
+  phoneNumber: string;
+}
+
+export type IArticle = {
+  _id: string;
+  title: string;
+  link: string;
+  description: string;
+  dateCreated: string;
+  mainImage: {
+    asset: {
+      url: string;
+    };
+  };
+};
+
 export interface Agent {
   id: string;
   name: string;
@@ -144,7 +172,6 @@ export interface User {
   lastLogin: string;
   status: 'Active' | 'Suspended' | 'Banned';
 }
-
 
 export type IPlan = {
   popular: any;

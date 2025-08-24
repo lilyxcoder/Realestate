@@ -14,7 +14,7 @@ export default async function Home() {
     <>
       <section className="relative h-[70vh] min-h-[450px] flex items-center justify-center text-white overflow-hidden">
         <Image
-          src="/images/properties/property-96.jpg"
+          src="/images/hero-img.jpg"
           alt="Luxury home with a pool at dusk"
           width={1920}
           height={1080}
